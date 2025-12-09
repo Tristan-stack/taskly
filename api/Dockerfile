@@ -22,7 +22,7 @@ WORKDIR /var/www/html
 # System deps
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git unzip libpq-dev nginx supervisor curl ca-certificates && \
+    git unzip libpq-dev nginx supervisor curl ca-certificates gettext-base && \
     docker-php-ext-install pdo pdo_pgsql opcache && \
     rm -rf /var/lib/apt/lists/*
 
@@ -46,6 +46,11 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 
 # Copy the rest of the code
 COPY . .
+
+# Create minimal .env for build (production uses env vars from Render)
+RUN echo "APP_ENV=prod" > .env && \
+    echo "APP_DEBUG=0" >> .env && \
+    echo "APP_SECRET=build-secret-key-change-in-production" >> .env
 
 # Build assets / warmup if needed
 RUN composer dump-autoload --optimize --classmap-authoritative && \
