@@ -12,7 +12,6 @@ var/
 public/bundles/
 public/build/
 
-composer.lock
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
