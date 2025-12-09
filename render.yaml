@@ -24,8 +24,8 @@ services:
     env: node
     rootDir: client
     plan: free
-    buildCommand: npm install && npm run build
-    startCommand: npm run start
+    buildCommand: cd client && npm ci && npm run build
+    startCommand: cd client && npm run start
     envVars:
       - key: NEXT_PUBLIC_API_URL
         value: https://taskly-mek3.onrender.com
