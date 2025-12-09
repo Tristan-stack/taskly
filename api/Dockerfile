@@ -35,20 +35,22 @@ RUN { \
     echo "opcache.validate_timestamps=${PHP_OPCACHE_VALIDATE_TIMESTAMPS}"; \
     echo "opcache.jit=${PHP_OPCACHE_JIT}"; \
     echo "opcache.jit_buffer_size=${PHP_OPCACHE_JIT_BUFFER_SIZE}"; \
-} > /usr/local/etc/php/conf.d/opcache.ini
+    } > /usr/local/etc/php/conf.d/opcache.ini
 
 # Composer
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 # Copy only composer files first for better caching
 COPY composer.json composer.lock symfony.lock* ./ 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-scripts
 
 # Copy the rest of the code
 COPY . .
 
 # Build assets / warmup if needed
-RUN composer dump-autoload --optimize --classmap-authoritative
+RUN composer dump-autoload --optimize --classmap-authoritative && \
+    php bin/console cache:clear --no-warmup || true && \
+    php bin/console assets:install public --symlink --relative || true
 
 # Nginx & Supervisor configs
 COPY docker/nginx.conf /etc/nginx/templates/nginx.conf
