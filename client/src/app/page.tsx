@@ -1,6 +1,16 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "https://symfony-api.onrender.com";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "https://taskly-mek3.onrender.com";
 
-export default function Home() {
+async function fetchApiHealth() {
+  try {
+    const res = await fetch(`${apiUrl}/`, { cache: 'no-store' });
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const apiHealth = await fetchApiHealth();
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900">
       <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-8 px-6 py-16 sm:px-12">
@@ -23,8 +33,17 @@ export default function Home() {
               le port Render <code>$PORT</code>. Doctrine lit l&apos;URL Postgres via <code>DATABASE_URL</code>.
             </p>
             <div className="rounded-lg bg-blue-50 px-4 py-3 text-sm text-blue-800">
-              URL API prévue : <span className="font-mono">{apiUrl}</span>
+              URL API : <span className="font-mono">{apiUrl}</span>
             </div>
+            {apiHealth ? (
+              <div className="rounded-lg bg-green-50 px-4 py-3 text-sm text-green-800">
+                ✅ API connectée : {apiHealth.message}
+              </div>
+            ) : (
+              <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">
+                ❌ API non accessible
+              </div>
+            )}
           </div>
           <div className="space-y-2">
             <h2 className="text-xl font-semibold">Front Next.js</h2>

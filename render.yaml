@@ -28,7 +28,7 @@ services:
     startCommand: npm run start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://symfony-api.onrender.com
+        value: https://taskly-mek3.onrender.com
     autoDeploy: true
 
 databases:
