@@ -1,0 +1,13 @@
+vendor
+var
+node_modules
+tests
+.git
+.gitignore
+.env.local
+.env.*
+docker-compose.yml
+docker-compose.override.yml
+README.md
+
+
