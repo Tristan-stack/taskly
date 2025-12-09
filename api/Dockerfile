@@ -52,6 +52,11 @@ RUN echo "APP_ENV=prod" > .env && \
     echo "APP_DEBUG=0" >> .env && \
     echo "APP_SECRET=build-secret-key-change-in-production" >> .env
 
+# Create var directory with proper permissions
+RUN mkdir -p var/cache var/log && \
+    chown -R www-data:www-data var && \
+    chmod -R 775 var
+
 # Build assets / warmup if needed
 RUN composer dump-autoload --optimize --classmap-authoritative && \
     php bin/console cache:clear --no-warmup || true && \
