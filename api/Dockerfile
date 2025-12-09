@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-bookworm
+FROM php:8.4-fpm-bookworm
 
 ARG APP_ENV=prod
 ENV APP_ENV=${APP_ENV} \
