@@ -11,7 +11,7 @@ chmod -R 775 /var/www/html/var
 
 # Render nginx config with PORT
 if [ -f /etc/nginx/templates/nginx.conf ]; then
-  sed "s/\$PORT/${PORT}/g" /etc/nginx/templates/nginx.conf > /etc/nginx/nginx.conf
+  sed "s/\${PORT}/${PORT}/g" /etc/nginx/templates/nginx.conf > /etc/nginx/nginx.conf
 fi
 
 echo "Starting supervisord (php-fpm + nginx) on port ${PORT}..."
