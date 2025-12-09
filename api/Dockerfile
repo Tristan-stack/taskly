@@ -59,6 +59,7 @@ RUN composer dump-autoload --optimize --classmap-authoritative && \
 
 # Nginx & Supervisor configs
 COPY docker/nginx.conf /etc/nginx/templates/nginx.conf
+COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
